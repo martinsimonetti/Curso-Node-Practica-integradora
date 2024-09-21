@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const CartManager = require('../../src/cartManager')
+const CartManager = require('../../dao/cartManagerFS.js')
 
 const cartManager = new CartManager()
 

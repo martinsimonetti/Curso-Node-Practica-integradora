@@ -1,5 +1,5 @@
 const fs = require('fs').promises
-const ProductManager = require('./productManager')
+const ProductManager = require('./productManagerFS.js')
 
 const productManager = new ProductManager("")
 

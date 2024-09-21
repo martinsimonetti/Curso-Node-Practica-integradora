@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const ProductManager = require('../../src/productManager')
+const ProductManager = require('../../dao/productManagerFS.js')
 const { getSocketIO } = require('../../src/utils.js')
 
 const productManager = new ProductManager("")
