@@ -11,6 +11,7 @@ socket.on('update-products', (product) => {
         <p><strong>Stock:</strong> ${product.stock}</p>
         <p><strong>Categoría:</strong> ${product.category}</p>
         <button onclick="deleteProduct(${product.id})">Eliminar</button>
+        <hr>
     `
     document.getElementById('listadoProductos').appendChild(productDiv)
 })
@@ -51,8 +52,9 @@ document.getElementById('productForm').addEventListener('submit', (event) => {
         body: JSON.stringify(product)
     })
     .then(response => response.json())
-    .then(data => {
+    .then(data => {        
         if (!data.error) {
+            alert(data)
             socket.emit('new-product', data)
         }
     })

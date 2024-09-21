@@ -27,12 +27,20 @@ class ProductManager {
                     error: "Debe completar todos los campos del producto."
                 }                                
             } else {
+                let maxId = 0
+
+                this.products.forEach((p) => {
+                    if( p.id > maxId){
+                        maxId = p.id
+                    }
+                })
+                
                 try {
                     if(!producto.thumbnails){
                         producto.thumbnails = []
                     }
                     let nuevoProducto = {
-                        id: this.products.length + 1,
+                        id: maxId + 1,
                         status: true,
                         ...producto                                             
                     }
