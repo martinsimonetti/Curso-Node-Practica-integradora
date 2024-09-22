@@ -1,36 +1,45 @@
 const express = require('express')
 const router = express.Router()
-const ProductManager = require('../../dao/productManagerFS.js')
+const ProductManager = require('../../dao/productManagerDB.js')
 const { getSocketIO } = require('../../src/utils.js')
 
 const productManager = new ProductManager("")
 
 router.get("/products", async (req, res) => { 
-    let consultas = req.query
-    const respuesta = await productManager.getProducts()
-    if(respuesta.status === "success"){
+    /*let consultas = req.query
+    const result = await productManager.getProducts()
+    if(result.status === "success"){
         if (Object.keys(consultas).length !== 0) {            
-            let elementosMostrar =  respuesta.payload.slice(0, consultas.limit)            
+            let elementosMostrar =  result.payload.slice(0, consultas.limit)            
             res.status(200)
             res.render("home", { data: elementosMostrar} )
         } else {
             res.status(200)
-            res.render("home", { data: respuesta.payload})
+            res.render("home", { data: result.payload})
         }
     } else {
-        res.status(404).json(respuesta.payload)
-    }    
+        res.status(404).json(result.payload)
+    }*/
+    const result = await productManager.getProducts()
+
+    if(result.status === "success"){
+        res.status(200)
+        res.render("home", { data: result.payload} )
+    } else {
+        res.status(404).json(result.payload)
+    }
 })
 
 router.get("/products/:pid", async (req, res) => {
-    const productoId = parseInt(req.params.pid)
-
-    const respuesta = await productManager.getProductById(productoId)
+    //const productoId = parseInt(req.params.pid)    
+    const productoId = req.params.pid    
     
-    if(respuesta.status === "success"){
-        res.status(200).json(respuesta.payload)
+    const result = await productManager.getProductById(productoId)
+    
+    if(result.status === "success"){
+        res.status(200).json(result.payload)
     } else {
-        res.status(200).json(respuesta.error)
+        res.status(200).json(result.error)
     }
 })
 
@@ -47,10 +56,11 @@ router.post("/products", async (req, res) => {
 })
 
 router.put("/products/:pid", async (req, res) => {
-    const productoId = parseInt(req.params.pid)
+    //const productoId = parseInt(req.params.pid)
+    const productoId = req.params.pid
 
     const respuesta = await productManager.editProduct(productoId, req.body)
-    
+
     if(respuesta.status === "success"){
         res.status(200).json(respuesta.payload)
     } else {
@@ -59,12 +69,12 @@ router.put("/products/:pid", async (req, res) => {
 })
 
 router.delete("/products/:pid", async (req, res) => {
-    const productoId = parseInt(req.params.pid)
-    
+    //const productoId = parseInt(req.params.pid)
+    const productoId = req.params.pid
+
     const respuesta = await productManager.deleteProduct(productoId)
     
-    if(respuesta.status === "success"){
-        io.emit('remove-product', productoId)  // Emitir evento para eliminar un producto
+    if(respuesta.status === "success"){        
         res.status(200).json(respuesta.payload)
     } else {
         res.status(404).json(respuesta.error)
@@ -72,7 +82,7 @@ router.delete("/products/:pid", async (req, res) => {
 })
 
 router.get("/realtimeproducts", async (req, res) => { 
-    let consultas = req.query
+    /*let consultas = req.query
     const respuesta = await productManager.getProducts()
     if(respuesta.status === "success"){
         if (Object.keys(consultas).length !== 0) {            
@@ -85,7 +95,15 @@ router.get("/realtimeproducts", async (req, res) => {
         }
     } else {
         res.status(404).json(respuesta.payload)
-    }    
+    }*/
+    const respuesta = await productManager.getProducts()
+    
+    if(respuesta.status === "success"){
+        res.status(200)
+        res.render("realTimeProducts", { data: respuesta.payload} )
+    } else {
+        res.status(404).json(respuesta.payload)
+    }
 })
 
 router.post("/realtimeproducts", async (req, res) => {
@@ -94,7 +112,7 @@ router.post("/realtimeproducts", async (req, res) => {
     }    
     const respuesta = await productManager.addProduct(nuevoProducto)    
     if(respuesta.status === "success"){        
-        const io = getSocketIO()
+        const io = getSocketIO()        
         io.emit('update-products', respuesta.payload)
         res.status(201)
     } else {
@@ -103,7 +121,8 @@ router.post("/realtimeproducts", async (req, res) => {
 })
 
 router.delete("/realtimeproducts/:pid", async (req, res) => {
-    const productoId = parseInt(req.params.pid)
+    //const productoId = parseInt(req.params.pid)
+    const productoId = req.params.pid
     const respuesta = await productManager.deleteProduct(productoId)
     if (respuesta.status === "success") {
         const io = getSocketIO()

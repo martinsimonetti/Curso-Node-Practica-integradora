@@ -2,7 +2,7 @@ const socket = io()
 
 socket.on('update-products', (product) => {
     const productDiv = document.createElement('div')
-    productDiv.id = `product-${product.id}`
+    productDiv.id = `product-${product._id}`
     productDiv.innerHTML = `
         <h2>${product.title}</h2>
         <p><strong>Descripción:</strong> ${product.description}</p>
@@ -10,7 +10,7 @@ socket.on('update-products', (product) => {
         <p><strong>Precio:</strong> $${product.price}</p>
         <p><strong>Stock:</strong> ${product.stock}</p>
         <p><strong>Categoría:</strong> ${product.category}</p>
-        <button onclick="deleteProduct(${product.id})">Eliminar</button>
+        <button onclick="deleteProduct('${product._id}')">Eliminar</button>
         <hr>
     `
     document.getElementById('listadoProductos').appendChild(productDiv)

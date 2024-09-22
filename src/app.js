@@ -1,5 +1,6 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
+const mongoose = require('mongoose')
 const { initializeSocket } = require('./utils.js')
 
 const productRouter = require('../api/products/products.router.js')
@@ -17,6 +18,15 @@ app.use(express.urlencoded({extended: true}))
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
+
+//Conexión a la DB
+mongoose.connect('')
+.then( () => {
+    console.log("Conectado a la Base de Datos.")
+})
+.catch(error => {
+    console.error("Error al conectar la Base de Datos. ", error)
+})
 
 app.use(express.static(__dirname + "/views"))
 app.use(express.static(__dirname + "/public"))

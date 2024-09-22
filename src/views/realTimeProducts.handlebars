@@ -20,14 +20,14 @@
 
 <div id="listadoProductos">
     {{#each data}}
-        <div id="product-{{this.id}}">
+        <div id="product-{{this._id}}">
             <h2>{{this.title}}</h2>
             <p><strong>Descripción:</strong> {{this.description}}</p>
             <p><strong>Código:</strong> {{this.code}}</p>
             <p><strong>Precio:</strong> ${{this.price}}</p>
             <p><strong>Stock:</strong> {{this.stock}}</p>
             <p><strong>Categoría:</strong> {{this.category}}</p>
-            <button onclick="deleteProduct({{this.id}})">Eliminar</button>
+            <button onclick="deleteProduct('{{this._id}}')">Eliminar</button>
             <hr>
         </div>        
     {{/each}}
