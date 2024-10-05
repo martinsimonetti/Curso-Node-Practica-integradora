@@ -20,7 +20,7 @@ app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 
 //Conexión a la DB
-mongoose.connect('')
+mongoose.connect('mongodb+srv://msimonetti:M1475963m@msimonetticluster0.dcft1.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=MsimonettiCluster0')
 .then( () => {
     console.log("Conectado a la Base de Datos.")
 })
